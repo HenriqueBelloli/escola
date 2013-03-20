@@ -4,14 +4,18 @@ import br.com.utilitarios.henrique.io.console;
 
 public class App {
 
+     Instituicao insti = new Instituicao();
+
     public static void main(String[] args) {
-        P_menuPrincipal();
+        App app = new App();
+        app.P_menuPrincipal();
     }
-    private static void P_menuPrincipal() {
+
+    private void P_menuPrincipal() {
         console.escreverLn("--------------------------------------------");
-        console.escrever  ("A - Cadastros || ");
+        console.escrever  ("A - Cadastros || " );
         console.escrever  ("B - Relatorios || ");
-        console.escreverLn("C - Sair ");
+        console.escreverLn("C - Sair "         );
         console.escreverLn("--------------------------------------------");
 
         switch (console.ler().toUpperCase()) {
@@ -30,7 +34,7 @@ public class App {
 
     }
 
-    private static void P_menuCadastros() {
+    private void P_menuCadastros() {
         console.escreverLn("A - Cadastrar Alunos");
         console.escreverLn("B - Cadastrar Turmas");
         console.escreverLn("C - Voltar");
@@ -51,7 +55,7 @@ public class App {
 
     }
 
-    private static void P_cadastrarTurma() {
+    private void P_cadastrarTurma() {
         int nCodigo;
         String cDescricao;
 
@@ -63,6 +67,7 @@ public class App {
             cDescricao = console.ler();
 
             Turma tur = new Turma(nCodigo, cDescricao);
+            insti.addTurma(tur);          
 
             console.escreverLn("Turma " + cDescricao + " Cadastrada com Sucesso!");
             console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
@@ -72,7 +77,7 @@ public class App {
         P_menuCadastros();
     }
 
-    private static void P_cadastrarAluno() {
+    private void P_cadastrarAluno() {
         int ra;
         String nome;
         double notaG1;
@@ -92,7 +97,7 @@ public class App {
             notaG2 = Double.parseDouble(console.ler());
 
             Aluno al = new Aluno(ra, nome);
-            
+
             console.escreverLn("Aluno " + nome + " Cadastrado com Sucesso!");
             console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
 
@@ -101,7 +106,7 @@ public class App {
         P_menuCadastros();
     }
 
-    private static void P_menuRelatorios() {
+    private void P_menuRelatorios() {
         console.escreverLn("A - Quantidade de alunos por Turma");
         console.escreverLn("B - Quantidade de Alunos Aprovados");
         console.escreverLn("C - Quantidade de Alunos Reprovados");
@@ -138,27 +143,36 @@ public class App {
         }
     }
 
-    private static void P_relatorioAlunosPorTurma() {
-        
+    private void P_relatorioAlunosPorTurma() {
     }
 
-    private static void P_quantidadeAprovados() {
-        
+    private void P_quantidadeAprovados() {
     }
 
-    private static void P_quantidadeReprovados() {
-        
+    private void P_quantidadeReprovados() {
     }
 
-    private static void P_porcentagemAprovados() {
-        
+    private void P_porcentagemAprovados() {
     }
 
-    private static void P_porcentagemReprovados() {
-        
+    private void P_porcentagemReprovados() {
     }
 
-    private static void P_mediaGeral() {
+    private void P_mediaGeral() {
+    }
+    
+    private boolean F_validaCodigoAluno(int turma, int codigo){
+        Turma t;
+        Aluno a;
+        for(int nContador = 0; nContador <= insti.turmas.size(); nContador++){
+            t = insti.turmas.get(nContador);
+            if(t.getCodigo() == codigo){
+                for(int nContador2 = 0; nContador2 <= t.alunos.size(); nContador2++){
+                    a = t.alunos.get(nContador2);
+                }
+            }
+        }
         
+        return true;
     }
 }

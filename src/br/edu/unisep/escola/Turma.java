@@ -6,7 +6,7 @@ public class Turma {
 
     private int nCodigo;
     private String cDescricao;
-    private ArrayList<Aluno> alunos;
+    public ArrayList<Aluno> alunos;
 
     public Turma(int codigo, String descricao) {
         this.nCodigo = codigo;
