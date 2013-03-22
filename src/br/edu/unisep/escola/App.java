@@ -4,7 +4,7 @@ import br.com.utilitarios.henrique.io.console;
 
 public class App {
 
-     Instituicao insti = new Instituicao();
+    Instituicao insti = new Instituicao();
 
     public static void main(String[] args) {
         App app = new App();
@@ -12,20 +12,24 @@ public class App {
     }
 
     private void P_menuPrincipal() {
-        console.escreverLn("--------------------------------------------");
-        console.escrever  ("A - Cadastros || " );
-        console.escrever  ("B - Relatorios || ");
-        console.escreverLn("C - Sair "         );
-        console.escreverLn("--------------------------------------------");
+        console.escreverLn("-------------------------------------------------------------");
+        console.escrever("A - Cadastros || ");
+        console.escrever("B - Manutenção || ");
+        console.escrever("C - Relatorios ||");
+        console.escreverLn("D - Sair ");
+        console.escreverLn("-------------------------------------------------------------");
 
         switch (console.ler().toUpperCase()) {
             case "A":
                 P_menuCadastros();
                 break;
             case "B":
-                P_menuRelatorios();
+                P_menuManutencao();
                 break;
             case "C":
+                P_menuRelatorios();
+
+            case "D":
                 System.exit(0);
             default:
                 console.escreverLn("Opção inválida.");
@@ -53,57 +57,6 @@ public class App {
                 P_menuCadastros();
         }
 
-    }
-
-    private void P_cadastrarTurma() {
-        int nCodigo;
-        String cDescricao;
-
-        do {
-            console.escrever("Digite o Código da Turma... ");
-            nCodigo = Integer.parseInt(console.ler());
-
-            console.escrever("Digite uma Descrição para a Turma... ");
-            cDescricao = console.ler();
-
-            Turma tur = new Turma(nCodigo, cDescricao);
-            insti.addTurma(tur);          
-
-            console.escreverLn("Turma " + cDescricao + " Cadastrada com Sucesso!");
-            console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
-
-        } while (console.ler().equalsIgnoreCase("S"));
-
-        P_menuCadastros();
-    }
-
-    private void P_cadastrarAluno() {
-        int ra;
-        String nome;
-        double notaG1;
-        double notaG2;
-
-        do {
-            console.escrever("Digite o R.A... ");
-            ra = Integer.parseInt(console.ler());
-
-            console.escrever("Digite o Nome... ");
-            nome = console.ler();
-
-            console.escrever("Digite a nota G1... ");
-            notaG1 = Double.parseDouble(console.ler());
-
-            console.escrever("Digite a nota G2... ");
-            notaG2 = Double.parseDouble(console.ler());
-
-            Aluno al = new Aluno(ra, nome);
-
-            console.escreverLn("Aluno " + nome + " Cadastrado com Sucesso!");
-            console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
-
-        } while (console.ler().equalsIgnoreCase("S"));
-
-        P_menuCadastros();
     }
 
     private void P_menuRelatorios() {
@@ -135,12 +88,140 @@ public class App {
                 P_mediaGeral();
                 break;
             case "G":
-                P_menuCadastros();
+                P_menuPrincipal();
                 break;
             default:
                 console.escreverLn("Opção inválida.");
                 P_menuRelatorios();
         }
+    }
+
+    private void P_menuManutencao() {
+        console.escreverLn("A - Matricular Aluno");
+        console.escreverLn("B - Lançar Notas");
+        console.escreverLn("C - Remover alunos da Turma");
+        console.escreverLn("D - Remover alunos");
+        console.escreverLn("E - Remover turmas");
+        console.escreverLn("F - Voltar");
+
+        switch (console.ler().toUpperCase()) {
+            case "A":
+                P_matricularAlunos();
+            default:
+                console.escreverLn("Opção inválida.");
+                P_menuManutencao();
+        }
+    }
+
+    private void P_cadastrarTurma() {
+        int nCodigo;
+        String cDescricao;
+        boolean lAux = true;
+
+        do {
+            do {
+                console.escrever("Digite o Código da Turma... ");
+                nCodigo = Integer.parseInt(console.ler());
+                if (!F_validaCodigoTurma(nCodigo)) {
+                    console.escreverLn("Já existe turma com esse código!");
+                    lAux = false;
+                }
+            } while (!lAux);
+
+            console.escrever("Digite uma Descrição para a Turma... ");
+            cDescricao = console.ler();
+
+            Turma tur = new Turma(nCodigo, cDescricao);
+            insti.addTurma(tur);
+
+            console.escreverLn("Turma " + cDescricao + " Cadastrada com Sucesso!");
+            console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+
+        P_menuCadastros();
+    }
+
+    private void P_cadastrarAluno() {
+        int ra;
+        String nome;
+        boolean lAux = true;
+        do {
+            do {
+
+                console.escrever("Digite o R.A.... ");
+                ra = Integer.parseInt(console.ler());
+                if (!F_validaCodigoAluno(ra)) {
+                    console.escreverLn("Já existe aluno com esse R.A.\n");
+                    lAux = false;
+                }
+            } while (!lAux);
+
+            console.escrever("Digite o Nome... ");
+            nome = console.ler();
+
+            Aluno al = new Aluno(ra, nome);
+            insti.addAluno(al);
+
+            console.escreverLn("Aluno " + nome + " Cadastrado com Sucesso!");
+            console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+
+        P_menuCadastros();
+    }
+
+    private void P_matricularAlunos() {
+        Aluno a = null;
+        Turma t = null;
+        boolean lAux;
+        do {
+            do {
+                lAux = false;
+
+                console.escrever("\nDigite o código da Turma... ");
+                int turma = Integer.parseInt(console.ler());
+
+                for (int nContador = 0; nContador < insti.turmas.size(); nContador++) {
+                    t = insti.turmas.get(nContador);
+                    if (t.getCodigo() == turma) {
+                        lAux = true;
+                        break;
+                    }
+                }
+                if (!lAux) {
+                    console.escreverLn("Turma não Encontrada! Informe uma das seguintes turmas...\n");
+                    insti.listarTurmas();
+                }
+            } while (!lAux);
+
+            do {
+                lAux = false;
+
+                console.escrever("Digite o código do Aluno.. ");
+                int aluno = Integer.parseInt(console.ler());
+
+                for (int nContador = 0; nContador < insti.alunos.size(); nContador++) {
+                    a = insti.alunos.get(nContador);
+                    if (a.getRa() == aluno) {
+                        lAux = true;
+                        break;
+                    }
+                }
+                if (!lAux) {
+                    console.escreverLn("Aluno não Encontrada! Informe uma dos seguintes Alunos...\n");
+                    insti.listarAlunos();
+                }
+            } while (!lAux);
+
+
+            t.matricula(a);
+            console.escreverLn("Aluno " + a.getNome() + " Matriculado com Sucesso!\n");
+            console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+
+
     }
 
     private void P_relatorioAlunosPorTurma() {
@@ -160,19 +241,27 @@ public class App {
 
     private void P_mediaGeral() {
     }
-    
-    private boolean F_validaCodigoAluno(int turma, int codigo){
-        Turma t;
+
+    public boolean F_validaCodigoAluno(int ra) {
         Aluno a;
-        for(int nContador = 0; nContador <= insti.turmas.size(); nContador++){
-            t = insti.turmas.get(nContador);
-            if(t.getCodigo() == codigo){
-                for(int nContador2 = 0; nContador2 <= t.alunos.size(); nContador2++){
-                    a = t.alunos.get(nContador2);
-                }
+        for (int nContador = 0; nContador < insti.alunos.size(); nContador++) {
+            a = insti.alunos.get(nContador);
+            if (a.getRa() == ra) {
+                return false;
             }
         }
-        
+        return true;
+    }
+
+    public boolean F_validaCodigoTurma(int codigo) {
+        Turma t;
+        for (int nContador = 0; nContador < insti.turmas.size(); nContador++) {
+            t = insti.turmas.get(nContador);
+            if (t.getCodigo() == codigo) {
+                return false;
+            }
+        }
+
         return true;
     }
 }
