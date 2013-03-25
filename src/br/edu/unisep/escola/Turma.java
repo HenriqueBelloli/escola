@@ -6,7 +6,7 @@ public class Turma {
 
     private int nCodigo;
     private String cDescricao;
-    public ArrayList<Aluno> alunos;
+    private ArrayList<Aluno> alunos;
 
     public Turma(int codigo, String descricao) {
         this.nCodigo = codigo;
@@ -29,11 +29,23 @@ public class Turma {
     public void setDescricao(String cDescricao) {
         this.cDescricao = cDescricao;
     }
-    
-    public void matricula(Aluno al){
-        this.alunos.add(al);
+
+    public ArrayList<Aluno> getAlunos() {
+        return this.alunos;
     }
-    
+
+    public void matricula(Aluno al) {
+        this.alunos.add(al);
+        al.setTurma(this.getCodigo());
+    }
+
+    public void cancelarMatricula(Aluno al) {
+        this.alunos.remove(al);
+        al.setTurma(-1);
+        al.setNotaG1(0);
+        al.setNotaG2(0);
+    }
+
     public int quantidade_alunos() {
         return this.alunos.size();
     }
@@ -41,7 +53,7 @@ public class Turma {
     public int quantidade_alunos_aprovados() {
         int nContador, nTotal = 0;
 
-        for (nContador = 0; nContador <= this.alunos.size(); nContador++) {
+        for (nContador = 0; nContador < this.alunos.size(); nContador++) {
             if (alunos.get(nContador).media() >= 7) {
                 nTotal++;
             }
@@ -52,7 +64,7 @@ public class Turma {
     public int quantidade_alunos_reprovados() {
         int nContador, nTotal = 0;
 
-        for (nContador = 0; nContador <= this.alunos.size(); nContador++) {
+        for (nContador = 0; nContador < this.alunos.size(); nContador++) {
             if (alunos.get(nContador).media() < 7) {
                 nTotal++;
             }
@@ -61,33 +73,33 @@ public class Turma {
     }
 
     public int porcentagem_alunos_aprovados() {
-        int nContador, nTotal = 0;
 
-        for (nContador = 0; nContador <= this.alunos.size(); nContador++) {
-            if (alunos.get(nContador).media() >= 7) {
-                nTotal++;
-            }
+        if (quantidade_alunos() > 0) {
+            return quantidade_alunos_aprovados() * 100 / quantidade_alunos();
+        } else {
+            return 0;
         }
-        return (nTotal * 100) / alunos.size();
     }
 
     public int porcentagem_alunos_reprovados() {
-        int nContador, nTotal = 0;
-
-        for (nContador = 0; nContador <= this.alunos.size(); nContador++) {
-            if (alunos.get(nContador).media() < 7) {
-                nTotal++;
-            }
+        if (quantidade_alunos() > 0) {
+            return quantidade_alunos_reprovados() * 100 / quantidade_alunos();
+        } else {
+            return 0;
         }
-        return (nTotal * 100) / alunos.size();
     }
 
-    public double media_geral_turma() {
-        int nContador, nTotal = 0;
-
-        for (nContador = 0; nContador <= this.alunos.size(); nContador++) {
-            nTotal += alunos.get(nContador).media();
+    public float media_geral_turma() {
+        int nContador;
+        float nTotal = 0;
+        
+        if (quantidade_alunos() > 0) {
+            for (nContador = 0; nContador < this.alunos.size(); nContador++) {
+                nTotal += alunos.get(nContador).media();
+            }
+            return nTotal / this.alunos.size();
+        } else {
+            return 0;
         }
-        return nTotal / this.alunos.size();
     }
 }

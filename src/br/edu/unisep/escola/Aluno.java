@@ -4,13 +4,14 @@ public class Aluno {
 
     private int ra;
     private String nome;
-    private double notaG1;
-    private double notaG2;
+    private float notaG1;
+    private float notaG2;
     private int turma;
 
     public Aluno(int ra, String nome) {
         this.ra = ra;
         this.nome = nome;
+        this.turma = -1;
     }
 
     public int getRa() {
@@ -33,7 +34,7 @@ public class Aluno {
         return notaG1;
     }
 
-    public void setNotaG1(double notaG1) {
+    public void setNotaG1(float notaG1) {
         this.notaG1 = notaG1;
     }
 
@@ -41,19 +42,19 @@ public class Aluno {
         return notaG2;
     }
 
-    public void setNotaG2(double notaG2) {
+    public void setNotaG2(float notaG2) {
         this.notaG2 = notaG2;
     }
 
     public int getTurma() {
-        return turma;
+        return turma; 
     }
 
     public void setTurma(int turma) {
         this.turma = turma;
     }
 
-    public double media() {
+    public float media() {
         return (this.notaG1 + this.notaG2 * 2) / 3;
     }
 

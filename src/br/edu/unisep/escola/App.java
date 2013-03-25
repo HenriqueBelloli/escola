@@ -1,6 +1,7 @@
 package br.edu.unisep.escola;
 
 import br.com.utilitarios.henrique.io.console;
+import br.com.utilitarios.henrique.validadores.StringUtils;
 
 public class App {
 
@@ -13,10 +14,10 @@ public class App {
 
     private void P_menuPrincipal() {
         console.escreverLn("-------------------------------------------------------------");
-        console.escrever("A - Cadastros || ");
-        console.escrever("B - Manutenção || ");
-        console.escrever("C - Relatorios ||");
-        console.escreverLn("D - Sair ");
+        console.escrever  ("A - Cadastros || " );
+        console.escrever  ("B - Manutenção || ");
+        console.escrever  ("C - Relatorios || ");
+        console.escreverLn("D - Sair "         );
         console.escreverLn("-------------------------------------------------------------");
 
         switch (console.ler().toUpperCase()) {
@@ -32,7 +33,7 @@ public class App {
             case "D":
                 System.exit(0);
             default:
-                console.escreverLn("Opção inválida.");
+                console.escreverLn("Opção inválida.\n");
                 P_menuPrincipal();
         }
 
@@ -53,45 +54,60 @@ public class App {
             case "C":
                 P_menuPrincipal();
             default:
-                console.escreverLn("Opção inválida.");
+                console.escreverLn("Opção inválida.\n");
                 P_menuCadastros();
         }
 
     }
 
     private void P_menuRelatorios() {
-        console.escreverLn("A - Quantidade de alunos por Turma");
-        console.escreverLn("B - Quantidade de Alunos Aprovados");
-        console.escreverLn("C - Quantidade de Alunos Reprovados");
-        console.escreverLn("D - Porcentagem de Alunos Aprovados");
-        console.escreverLn("E - Porcentagem de Alunos Reprovados");
-        console.escreverLn("F - Media geral por Turma");
-        console.escreverLn("G - Voltar");
+        console.escreverLn("A - Alunos Cadastrados");
+        console.escreverLn("B - Turmas Cadastradas");
+        console.escreverLn("C - Alunos por Turma");
+        console.escreverLn("D - Quantidade de alunos por Turma");
+        console.escreverLn("E - Quantidade de Alunos Aprovados por Turma");
+        console.escreverLn("F - Quantidade de Alunos Reprovados por Turma");
+        console.escreverLn("G - Porcentagem de Alunos Aprovados por Turma");
+        console.escreverLn("H - Porcentagem de Alunos Reprovados por Turma");
+        console.escreverLn("I - Nota dos Alunos por Turma");
+        console.escreverLn("J - Media geral por Turma");
+        console.escreverLn("K - Voltar");
 
         switch (console.ler().toUpperCase()) {
             case "A":
-                P_relatorioAlunosPorTurma();
+                P_relatorioAlunosCadastrados();
                 break;
             case "B":
-                P_quantidadeAprovados();
+                P_relatorioTurmasCadastradas();
                 break;
             case "C":
-                P_quantidadeReprovados();
+                P_relatorioAlunosPorTurma();
                 break;
             case "D":
-                P_porcentagemAprovados();
+                P_relatorioQuantidadeAlunosPorTurma();
                 break;
             case "E":
-                P_porcentagemReprovados();
+                P_relatorioQuantidadeAprovadosPorTurma();
                 break;
             case "F":
-                P_mediaGeral();
+                P_relatorioQuantidadeReprovadosPorTurma();
                 break;
             case "G":
+                P_relatorioPorcentagemAprovadosPorTurma();
+                break;
+            case "H":
+                P_relatorioPorcentagemReprovadosPorTurma();
+            case "I":
+                P_relatorioNotasAlunos();
+                break;
+            case "J":
+                P_relatorioMediaGeral();
+                break;
+            case "K":
                 P_menuPrincipal();
                 break;
             default:
-                console.escreverLn("Opção inválida.");
+                console.escreverLn("Opção inválida.\n");
                 P_menuRelatorios();
         }
     }
@@ -107,24 +123,46 @@ public class App {
         switch (console.ler().toUpperCase()) {
             case "A":
                 P_matricularAlunos();
+                break;
+            case "B":
+                P_lancarNotas();
+                break;
+            case "C":
+                P_removerAlunoTurma();
+                break;
+            case "D":
+                P_removerAluno();
+            case "E":
+                P_removerTurma();
+            case "F":
+                P_menuPrincipal();
             default:
-                console.escreverLn("Opção inválida.");
+                console.escreverLn("Opção inválida.\n");
                 P_menuManutencao();
         }
     }
 
     private void P_cadastrarTurma() {
-        int nCodigo;
+        int nCodigo = 0;
         String cDescricao;
+        String _cCodigo;
         boolean lAux = true;
 
         do {
             do {
+                lAux = true;
                 console.escrever("Digite o Código da Turma... ");
-                nCodigo = Integer.parseInt(console.ler());
-                if (!F_validaCodigoTurma(nCodigo)) {
-                    console.escreverLn("Já existe turma com esse código!");
+                _cCodigo = console.ler();
+
+                if (!StringUtils.ehInteiro(_cCodigo)) {
+                    console.escreverLn("Digite um número Inteiro\n");
                     lAux = false;
+                } else {
+                    nCodigo = Integer.parseInt(_cCodigo);
+                    if (!F_validaCodigoTurma(nCodigo)) {
+                        console.escreverLn("Já existe turma com esse código!\n");
+                        lAux = false;
+                    }
                 }
             } while (!lAux);
 
@@ -134,7 +172,7 @@ public class App {
             Turma tur = new Turma(nCodigo, cDescricao);
             insti.addTurma(tur);
 
-            console.escreverLn("Turma " + cDescricao + " Cadastrada com Sucesso!");
+            console.escreverLn("\nTurma " + cDescricao + " Cadastrada com Sucesso!");
             console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
 
         } while (console.ler().equalsIgnoreCase("S"));
@@ -143,17 +181,26 @@ public class App {
     }
 
     private void P_cadastrarAluno() {
-        int ra;
+        int ra = 0;
+        String _ra;
         String nome;
         boolean lAux = true;
+
         do {
             do {
-
+                lAux = true;
                 console.escrever("Digite o R.A.... ");
-                ra = Integer.parseInt(console.ler());
-                if (!F_validaCodigoAluno(ra)) {
-                    console.escreverLn("Já existe aluno com esse R.A.\n");
+                _ra = console.ler();
+
+                if (!StringUtils.ehInteiro(_ra)) {
+                    console.escreverLn("Digite um número Inteiro.\n");
                     lAux = false;
+                } else {
+                    ra = Integer.parseInt(_ra);
+                    if (!F_validaCodigoAluno(ra)) {
+                        console.escreverLn("Já existe aluno com esse R.A.\n");
+                        lAux = false;
+                    }
                 }
             } while (!lAux);
 
@@ -163,7 +210,7 @@ public class App {
             Aluno al = new Aluno(ra, nome);
             insti.addAluno(al);
 
-            console.escreverLn("Aluno " + nome + " Cadastrado com Sucesso!");
+            console.escreverLn("\nAluno " + nome + " Cadastrado com Sucesso!");
             console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
 
         } while (console.ler().equalsIgnoreCase("S"));
@@ -172,80 +219,362 @@ public class App {
     }
 
     private void P_matricularAlunos() {
-        Aluno a = null;
-        Turma t = null;
-        boolean lAux;
+
         do {
-            do {
-                lAux = false;
-
-                console.escrever("\nDigite o código da Turma... ");
-                int turma = Integer.parseInt(console.ler());
-
-                for (int nContador = 0; nContador < insti.turmas.size(); nContador++) {
-                    t = insti.turmas.get(nContador);
-                    if (t.getCodigo() == turma) {
-                        lAux = true;
-                        break;
-                    }
-                }
-                if (!lAux) {
-                    console.escreverLn("Turma não Encontrada! Informe uma das seguintes turmas...\n");
-                    insti.listarTurmas();
-                }
-            } while (!lAux);
-
-            do {
-                lAux = false;
-
-                console.escrever("Digite o código do Aluno.. ");
-                int aluno = Integer.parseInt(console.ler());
-
-                for (int nContador = 0; nContador < insti.alunos.size(); nContador++) {
-                    a = insti.alunos.get(nContador);
-                    if (a.getRa() == aluno) {
-                        lAux = true;
-                        break;
-                    }
-                }
-                if (!lAux) {
-                    console.escreverLn("Aluno não Encontrada! Informe uma dos seguintes Alunos...\n");
-                    insti.listarAlunos();
-                }
-            } while (!lAux);
-
+            Turma t = F_selecionarTurma();
+            Aluno a = F_selecionarAluno(true);
 
             t.matricula(a);
-            console.escreverLn("Aluno " + a.getNome() + " Matriculado com Sucesso!\n");
+            console.escreverLn("\nAluno " + a.getNome() + " Matriculado com Sucesso!\n");
             console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
 
         } while (console.ler().equalsIgnoreCase("S"));
+        P_menuManutencao();
+    }
 
+    private void P_lancarNotas() {
+        do {
+            Aluno a = F_selecionarAluno(false);
+            boolean lAux = true;
+            float g1 = 0;
+            float g2 = 0;
 
+            do {
+                console.escrever("Digite a nota da G1.. ");
+                String _g1 = console.ler();
+
+                if (!StringUtils.ehNumero(_g1)) {
+                    console.escreverLn("\nExpressão Inválida!\n");
+                    lAux = false;
+                } else {
+                    g1 = Float.parseFloat(_g1);
+                }
+
+            } while (!lAux);
+
+            do {
+                console.escrever("Digite a nota da G2.. ");
+                String _g2 = console.ler();
+
+                if (!StringUtils.ehNumero(_g2)) {
+                    console.escreverLn("\nExpressão Inválida!\n");
+                    lAux = false;
+                } else {
+                    g2 = Float.parseFloat(_g2);
+                }
+
+            } while (!lAux);
+
+            a.setNotaG1(g1);
+            a.setNotaG2(g2);
+
+            console.escreverLn("\nNotas do Aluno " + a.getNome() + " Lançadas com Sucesso!\n");
+            console.escreverLn("Deseja realizar outro Lançamento? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+        P_menuManutencao();
+    }
+
+    private void P_removerAlunoTurma() {
+        Turma t;
+        Aluno a;
+        do {
+            do {
+                t = F_selecionarTurma();
+                a = F_selecionarAluno(false);
+            } while (!F_procurarAlunoNaTurma(a, t, true));
+
+            t.cancelarMatricula(a);
+            console.escreverLn("\nAluno " + a.getNome() + " removido da turma " + t.getDescricao() + " com Sucesso!\n");
+            console.escreverLn("Deseja cancelar outra matricula? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+        P_menuManutencao();
+    }
+
+    private void P_removerAluno() {
+        Turma t;
+        Aluno a;
+        do {
+            a = F_selecionarAluno(false);
+
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                t = insti.getTurmas().get(nContador);
+                if (F_procurarAlunoNaTurma(a, t, false)) {
+                    t.cancelarMatricula(a);
+                }
+            }
+            insti.removerAluno(a);
+            
+            console.escreverLn("\nAluno " + a.getNome() + " removido com Sucesso!\n");
+            console.escreverLn("Deseja remover outro aluno? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+        P_menuManutencao();
+    }
+
+    private void P_removerTurma() {
+        do {
+            Aluno a;
+            Turma t = F_selecionarTurma();
+
+            for (int nContador = 0; nContador < t.quantidade_alunos(); nContador++) {
+                a = t.getAlunos().get(nContador);
+                t.cancelarMatricula(a);
+            }
+            insti.removerTurma(t);
+
+            console.escreverLn("\nTurma " + t.getDescricao() + " removida com Sucesso!\n");
+            console.escreverLn("Deseja remover outra turma? \n   [S]im  [N]ão");
+
+        } while (console.ler().equalsIgnoreCase("S"));
+        P_menuManutencao();
+    }
+
+    private void P_relatorioAlunosCadastrados() {
+        insti.listarAlunos();
+        console.escreverLn("------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
+    }
+
+    private void P_relatorioTurmasCadastradas() {
+        insti.listarTurmas();
+        console.escreverLn("------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
     private void P_relatorioAlunosPorTurma() {
+        Turma t;
+        Aluno a;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                if (t.quantidade_alunos() > 0) {
+                    for (int nContador2 = 0; nContador2 < t.quantidade_alunos(); nContador2++) {
+                        a = t.getAlunos().get(nContador2);
+                        console.escreverLn(a.getNome());
+                    }
+                } else {
+                    console.escreverLn("Sem alunos");
+                }
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
-    private void P_quantidadeAprovados() {
+    private void P_relatorioQuantidadeAlunosPorTurma() {
+        Turma t;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                if (t.quantidade_alunos() > 0) {
+                    console.escrever(t.quantidade_alunos() + " ");
+                    if (t.quantidade_alunos() > 1) {
+                        console.escreverLn("Alunos");
+                    } else {
+                        console.escreverLn("Aluno");
+                    }
+                } else {
+                    console.escreverLn("Sem alunos");
+                }
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
-    private void P_quantidadeReprovados() {
+    private void P_relatorioQuantidadeAprovadosPorTurma() {
+        Turma t;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                if (t.quantidade_alunos_aprovados() > 0) {
+                    console.escrever(t.quantidade_alunos_aprovados() + " ");
+                    if (t.quantidade_alunos_aprovados() > 1) {
+                        console.escreverLn("Alunos");
+                    } else {
+                        console.escreverLn("Aluno");
+                    }
+                } else {
+                    console.escreverLn("Nenhum aluno");
+                }
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
-    private void P_porcentagemAprovados() {
+    private void P_relatorioQuantidadeReprovadosPorTurma() {
+        Turma t;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                if (t.quantidade_alunos_reprovados() > 0) {
+                    console.escrever(t.quantidade_alunos_reprovados() + " ");
+                    if (t.quantidade_alunos_reprovados() > 1) {
+                        console.escreverLn("Alunos");
+                    } else {
+                        console.escreverLn("Aluno");
+                    }
+                } else {
+                    console.escreverLn("Nenhum aluno");
+                }
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
-    private void P_porcentagemReprovados() {
+    private void P_relatorioPorcentagemAprovadosPorTurma() {
+        Turma t;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                console.escreverLn(t.porcentagem_alunos_aprovados() + "%");
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
-    private void P_mediaGeral() {
+    private void P_relatorioPorcentagemReprovadosPorTurma() {
+        Turma t;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                console.escreverLn(t.porcentagem_alunos_reprovados() + "%");
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
+    }
+
+    private void P_relatorioNotasAlunos() {
+        Turma t;
+        Aluno a;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                if (t.quantidade_alunos() > 0) {
+                    console.escreverLn("Aluno    \tG1  \tG2  \tMedia\n");
+                    for (int nContador2 = 0; nContador2 < t.quantidade_alunos(); nContador2++) {
+                        a = t.getAlunos().get(nContador2);
+                        console.escreverLn(a.getNome().trim() + "   \t" + a.getNotaG1() + "  \t" + a.getNotaG2() + "  \t" + a.media());
+                    }
+                } else {
+                    console.escreverLn("Sem alunos");
+                }
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
+    }
+
+    private void P_relatorioMediaGeral() {
+        Turma t;
+
+        if (insti.quantidadeTurmas() > 0) {
+            for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                console.escreverLn("\n------------------------------------");
+                t = insti.getTurmas().get(nContador);
+                console.escreverLn(t.getDescricao());
+                console.escreverLn("------------------------------------");
+
+                console.escreverLn(t.media_geral_turma() + "");
+            }
+        } else {
+            console.escreverLn("\n------------------------------------");
+            console.escreverLn("Nenhuma Turma Cadastrada!");
+        }
+        console.escreverLn("\n------------------------------------\n");
+
+        F_Wait();
+        P_menuRelatorios();
     }
 
     public boolean F_validaCodigoAluno(int ra) {
         Aluno a;
-        for (int nContador = 0; nContador < insti.alunos.size(); nContador++) {
-            a = insti.alunos.get(nContador);
+        for (int nContador = 0; nContador < insti.quantidadeAlunos(); nContador++) {
+            a = insti.getAlunos().get(nContador);
             if (a.getRa() == ra) {
                 return false;
             }
@@ -255,13 +584,110 @@ public class App {
 
     public boolean F_validaCodigoTurma(int codigo) {
         Turma t;
-        for (int nContador = 0; nContador < insti.turmas.size(); nContador++) {
-            t = insti.turmas.get(nContador);
+        for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+            t = insti.getTurmas().get(nContador);
             if (t.getCodigo() == codigo) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    public Turma F_selecionarTurma() {
+        Turma tur = null;
+        boolean lAux;
+
+        do {
+            lAux = false;
+            String _turma;
+            int turma = 0;
+
+            console.escrever("\nDigite o código da Turma... ");
+            _turma = console.ler();
+
+            if (!StringUtils.ehInteiro(_turma)) {
+                console.escreverLn("O código deve ser inteiro");
+            } else {
+                turma = Integer.parseInt(_turma);
+                for (int nContador = 0; nContador < insti.quantidadeTurmas(); nContador++) {
+                    tur = insti.getTurmas().get(nContador);
+                    if (tur.getCodigo() == turma) {
+                        lAux = true;
+                        break;
+                    }
+                }
+                if (!lAux) {
+                    console.escreverLn("Turma não Encontrada! Informe uma das seguintes turmas...\n");
+                    insti.listarTurmas();
+                }
+            }
+        } while (!lAux);
+
+        return tur;
+
+    }
+
+    public Aluno F_selecionarAluno(boolean lMatricula) {
+        Aluno al = null;
+        boolean lAux;
+        String _ra;
+        int aluno;
+
+        do {
+            lAux = false;
+
+            console.escrever("Digite o código do Aluno.. ");
+            _ra = console.ler();
+
+            if (!StringUtils.ehInteiro(_ra)) {
+                console.escreverLn("Digite um número Inteiro.\n");
+            } else {
+                aluno = Integer.parseInt(_ra);
+
+                for (int nContador = 0; nContador < insti.quantidadeAlunos(); nContador++) {
+                    al = insti.getAlunos().get(nContador);
+                    if (al.getRa() == aluno) {
+                        lAux = true;
+                        break;
+                    }
+                }
+                if (!lAux) {
+                    console.escreverLn("Aluno não Encontrado! Informe uma dos seguintes Alunos...\n");
+                    insti.listarAlunos();
+                } else {
+                    if (lMatricula && al.getTurma() != -1) {
+                        console.escreverLn("O Aluno já está matriculado na turma " + al.getTurma());
+                        console.escreverLn("Deseja continuar? [S]im [N]ão");
+                        if (console.ler().equalsIgnoreCase("N")) {
+                            lAux = false;
+                        }
+                    }
+                }
+            }
+        } while (!lAux);
+
+        return al;
+    }
+
+    public boolean F_procurarAlunoNaTurma(Aluno al, Turma tur, boolean lMensagem) {
+        Aluno a;
+
+        for (int nContador = 0; nContador < tur.quantidade_alunos(); nContador++) {
+            a = tur.getAlunos().get(nContador);
+            if (a.getTurma() == al.getTurma()) {
+                return true;
+            }
+
+        }
+        if (lMensagem) {
+            console.escreverLn("O aluno " + al.getNome() + "Não está matriculado na turma " + tur.getDescricao());
+        }
+        return false;
+    }
+
+    public void F_Wait() {
+        console.escrever("Pressione Qualquer tecla para continuar... ");
+        console.ler();
     }
 }
