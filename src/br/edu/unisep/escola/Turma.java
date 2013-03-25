@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Turma {
 
-    private int nCodigo;
-    private String cDescricao;
+    private int     nCodigo   ;
+    private String  cDescricao;
     private ArrayList<Aluno> alunos;
 
     public Turma(int codigo, String descricao) {

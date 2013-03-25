@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class Instituicao {
 
-    private ArrayList<Turma> turmas = new ArrayList<Turma>();
-    private ArrayList<Aluno> alunos = new ArrayList<Aluno>();
+    private ArrayList<Turma> turmas = new ArrayList<>();
+    private ArrayList<Aluno> alunos = new ArrayList<>();
 
     public void addTurma(Turma tur) {
         this.turmas.add(tur);
