@@ -235,7 +235,7 @@ public class App {
                     Aluno a = F_selecionarAluno(true);
 
                     t.matricula(a);
-                    console.escreverLn("\nAluno " + a.getNome() + " Matriculado com Sucesso!\n");
+                    console.escreverLn("\nAluno " + a.getNome() + " matriculado com Sucesso!\n");
                     console.escreverLn("Deseja realizar outro cadastro? \n   [S]im  [N]ão");
 
                 } while (console.ler().equalsIgnoreCase("S"));
