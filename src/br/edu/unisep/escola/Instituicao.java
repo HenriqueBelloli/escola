@@ -41,9 +41,9 @@ public class Instituicao {
     }
 
     public void listarTurmas() {
+        console.escreverLn("------------------------------------");
         if (quantidadeTurmas() > 0) {
             Turma t;
-            console.escreverLn("------------------------------------");
             console.escreverLn("Código \tDescrição");
             console.escreverLn("------------------------------------");
 
@@ -71,5 +71,22 @@ public class Instituicao {
         } else {
             console.escreverLn("Nenhum Aluno Cadastrado!");
         }
+    }
+
+    public int quantidadeAlunosSemTurma() {
+        int nTotal = 0;
+
+        if (quantidadeAlunos() > 0) {
+            Aluno a;
+
+            for (int nContador = 0; nContador < this.alunos.size(); nContador++) {
+                a = this.alunos.get(nContador);
+                if (a.getTurma() == -1) {
+                    nTotal++;
+                }
+            }
+        }
+
+        return nTotal;
     }
 }

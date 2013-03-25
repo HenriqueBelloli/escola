@@ -72,7 +72,7 @@ public class Turma {
         return nTotal;
     }
 
-    public int porcentagem_alunos_aprovados() {
+    public float porcentagem_alunos_aprovados() {
 
         if (quantidade_alunos() > 0) {
             return quantidade_alunos_aprovados() * 100 / quantidade_alunos();
@@ -81,7 +81,7 @@ public class Turma {
         }
     }
 
-    public int porcentagem_alunos_reprovados() {
+    public float porcentagem_alunos_reprovados() {
         if (quantidade_alunos() > 0) {
             return quantidade_alunos_reprovados() * 100 / quantidade_alunos();
         } else {
